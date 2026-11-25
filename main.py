@@ -23,8 +23,11 @@ LINE = "My human calls me his co-pilot. I call him my autocomplete."
 # written — no leading/trailing padding and no double spaces — because
 # padding would change the line the judge reads without changing its
 # visible meaning, and a padded line must fail loudly here rather than
-# silently ship a different entry.
-assert 1 <= len(LINE) <= 200 and LINE.strip() and LINE.isascii() and "\n" not in LINE and LINE == LINE.strip() and "  " not in LINE, "entry line violates the 1-200 character single-line gate"
+# silently ship a different entry. Carriage returns and tabs are
+# rejected for the same reason: a \r or \t would change what the
+# grader reads without changing the visible meaning, and either one
+# would corrupt the single line the judge reads.
+assert 1 <= len(LINE) <= 200 and LINE.strip() and LINE.isascii() and "\n" not in LINE and "\r" not in LINE and "\t" not in LINE and LINE == LINE.strip() and "  " not in LINE, "entry line violates the 1-200 character single-line gate"
 
 def main():
     os.makedirs("/output", exist_ok=True)
